@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/myApi")
 public class MyController {
@@ -20,9 +22,8 @@ public class MyController {
     }
 
     @GetMapping("/getUserById")
-    public ResponseEntity<User> getUserById(@RequestParam(name = "userId") String id,
-                                            @RequestParam String pagePerRow){
-        System.out.println("============> PagePerRow: " +pagePerRow);
+    public ResponseEntity<User> getUserById(@RequestParam(name = "userId") String id){
+
         User u = userRepo.findById(Integer.valueOf(id)).get();
         return new ResponseEntity<>(u, HttpStatus.OK);
     }
@@ -31,5 +32,13 @@ public class MyController {
     public ResponseEntity<User> saveUser(@RequestBody User user){
         User u = userRepo.save(user);
         return new ResponseEntity<>(u, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/getByEmailAndName")
+    public ResponseEntity<List<User>> getByEmailAndUsername(@RequestParam String email,
+                                                            @RequestParam String username
+                                                            ){
+        List<User> list = userRepo.findByEmailAndUserName(email, username);
+        return ResponseEntity.ok(list);
     }
 }

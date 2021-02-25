@@ -2,10 +2,7 @@ package com.batch2.latihan.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -17,7 +14,10 @@ public class User {
     @Column(name = "username")
     private String userName;
     private String email;
-    private String role;
+
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public Integer getId() {
         return id;
@@ -43,11 +43,11 @@ public class User {
         this.email = email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }
